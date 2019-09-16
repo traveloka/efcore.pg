@@ -333,6 +333,11 @@ WHERE s.""SomeText"" LIKE ANY (@__patterns_0)");
 
             public ArrayQueryContext(DbContextOptions options) : base(options) {}
 
+            protected override void OnModelCreating(ModelBuilder modelBuilder)
+                => modelBuilder.Entity<SomeArrayEntity>()
+                    .HasIndex(b => b.Id)
+                    .HasOperators()
+
             public static void Seed(ArrayQueryContext context)
             {
                 context.SomeEntities.AddRange(

@@ -18,11 +18,23 @@ Although applications can update concurrency tokens themselves, we frequently re
 
 To enable this feature on an entity, insert the following code into your context's `OnModelCreating` method:
 
+# [Version 3.0](#tab/3.0)
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    => modelBuilder.Entity<Blog>()
+                   .UseXminAsConcurrencyToken();
+```
+
+# [Version 2.2](#tab/2.2)
+
 ```c#
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     => modelBuilder.Entity<Blog>()
                    .ForNpgsqlUseXminAsConcurrencyToken();
 ```
+
+---
 
 ## Execution Strategy
 
@@ -41,11 +53,23 @@ This strategy relies on the `IsTransient` property of `NpgsqlException`. Both th
 
 PostgreSQL allows you to [attach comments](https://www.postgresql.org/docs/current/static/sql-syntax-lexical.html#SQL-SYNTAX-COMMENTS) to database objects, which can help explain their purpose for someone examining the schema. The Npgsql EF Core provider supports this for tables or columns, simply set the comment in your model's `OnModelCreating` as follows:
 
+# [Version 3.0](#tab/3.0)
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    => modelBuilder.Entity<MyEntity>()
+                   .HasComment("Some comment");
+```
+
+# [Version 2.2](#tab/2.2)
+
 ```c#
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     => modelBuilder.Entity<MyEntity>()
                    .ForNpgsqlHasComment("Some comment");
 ```
+
+---
 
 ## Certificate authentication
 
@@ -96,10 +120,21 @@ protected override void OnModelCreating(ModelBuilder modelBuilder)
 
 PostgreSQL allows you to locate your database in different parts of your filesystem, [via tablespaces](https://www.postgresql.org/docs/current/static/manage-ag-tablespaces.html). The Npgsql EF Core provider allows you to specify your database's namespace:
 
+# [Version 3.0](#tab/3.0)
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    => modelBuilder.UseTablespace("my_tablespace");
+```
+
+# [Version 2.2](#tab/2.2)
+
 ```c#
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     => modelBuilder.ForNpgsqlUseTablespace("my_tablespace");
 ```
+
+---
 
 You must have created your tablespace prior to this via the `CREATE TABLESPACE` command - the Npgsql EF Core provider does not do this for you. Note also that specifying a tablespace on specific tables is not supported.
 

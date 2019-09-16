@@ -61,6 +61,24 @@ One disadvantage of database-generated values is that these values must be read 
 
 To use HiLo, specify `ForNpgsqlUseSequenceHiLo` on a property in your model's `OnModelCreating`:
 
+# [Version 3.0](#tab/3.0)
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    => modelBuilder.Entity<Blog>()
+                   .Property(b => b.Id)
+                   .UseHiLo();
+```
+
+You can also make your model use HiLo everywhere:
+
+```c#
+protected override void OnModelCreating(ModelBuilder modelBuilder)
+    => modelBuilder.UseHiLo();
+```
+
+# [Version 2.2](#tab/2.2)
+
 ```c#
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     => modelBuilder.Entity<Blog>()
@@ -74,6 +92,8 @@ You can also make your model use HiLo everywhere:
 protected override void OnModelCreating(ModelBuilder modelBuilder)
     => modelBuilder.ForNpgsqlUseSequenceHiLo();
 ```
+
+---
 
 ## Guid/UUID Generation
 
