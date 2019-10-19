@@ -15,7 +15,7 @@
     <PackageIconUrl>http://www.npgsql.org/img/postgresql.gif</PackageIconUrl>
     <PackageLicenseExpression>PostgreSQL</PackageLicenseExpression>
     <RepositoryType>git</RepositoryType>
-    <RepositoryUrl>git://github.com/npgsql/Npgsql.EntityFrameworkCore.PostgreSQL</RepositoryUrl>
+    <RepositoryUrl>git://github.com/npgsql/efcore.pg</RepositoryUrl>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="..\Shared\*.cs" />
