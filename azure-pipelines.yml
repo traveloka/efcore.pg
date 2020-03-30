@@ -27,7 +27,7 @@ steps:
     displayName: 'Set nuget credentials'
     inputs:
       XmlWorkingDir: '$(Build.SourcesDirectory)'
-      XmlTargetFilters: NuGet.config
+      XmlTargetFilters: nuget.config
       JsonPatchContent: |
         + /configuration/packageSourceCredentials => ""
         + /configuration/packageSourceCredentials/tvlk-ecb => ""
