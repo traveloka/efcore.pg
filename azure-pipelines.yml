@@ -1,0 +1,38 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+  - tvlk/4.0.11.tvlk
+
+pr:
+  - tvlk/4.0.11.tvlk
+
+pool:
+  name: Default
+
+variables:
+  buildConfiguration: 'Release'
+  projects: 'src/Npgsql*/*.csproj'
+
+steps:
+  - task: DotNetCoreInstaller@2
+    displayName: Install .NET Core 2.2.207 with 2.2.8 runtime
+    inputs:
+      packageType: 'sdk'
+      version: '2.2.207'
+
+  - script: dotnet pack src/EFCore.PG/EFCore.PG.csproj -c Release
+    displayName: Pack EFCore.PG
+  - script: dotnet pack src/EFCore.PG.NodaTime/EFCore.PG.NodaTime.csproj -c Release
+    displayName: Pack EFCore.PG.NodaTime
+  - script: dotnet pack src/EFCore.PG.NTS/EFCore.PG.NTS.csproj -c Release
+    displayName: Pack EFCore.PG.NTS
+
+  - task: DotNetCoreCLI@2
+    displayName: Publish to azure packages
+    inputs:
+      command: 'push'
+      packagesToPush: 'src/**/*.nupkg'
+      feedPublish: 'tvlk-ecb'

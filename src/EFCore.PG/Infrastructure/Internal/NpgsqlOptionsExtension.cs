@@ -49,6 +49,12 @@ namespace Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal
         public RemoteCertificateValidationCallback RemoteCertificateValidationCallback { get; private set; }
 
         /// <summary>
+        /// The specified <see cref="ProvidePasswordCallback"/>.
+        /// </summary>
+        [CanBeNull]
+        public ProvidePasswordCallback ProvidePasswordCallback { get; private set; }
+
+        /// <summary>
         /// True if reverse null ordering is enabled; otherwise, false.
         /// </summary>
         public bool ReverseNullOrdering { get; private set; }
@@ -71,6 +77,7 @@ namespace Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal
             PostgresVersion = copyFrom.PostgresVersion;
             ProvideClientCertificatesCallback = copyFrom.ProvideClientCertificatesCallback;
             RemoteCertificateValidationCallback = copyFrom.RemoteCertificateValidationCallback;
+            ProvidePasswordCallback = copyFrom.ProvidePasswordCallback;
             ReverseNullOrdering = copyFrom.ReverseNullOrdering;
         }
 
@@ -197,6 +204,20 @@ namespace Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal
             return clone;
         }
 
+        /// <summary>
+        /// Returns a copy of the current instance with the specified <see cref="ProvidePasswordCallback"/>.
+        /// </summary>
+        /// <param name="callback">The specified callback.</param>
+        [NotNull]
+        public virtual NpgsqlOptionsExtension WithProvidePasswordCallback([CanBeNull] ProvidePasswordCallback callback)
+        {
+            var clone = (NpgsqlOptionsExtension)Clone();
+
+            clone.ProvidePasswordCallback = callback;
+
+            return clone;
+        }
+
         #endregion Authentication
 
         public override long GetServiceProviderHashCode()
@@ -212,6 +233,7 @@ namespace Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal
                     _serviceProviderHash = (_serviceProviderHash * 397) ^ (PostgresVersion?.GetHashCode() ?? 0L);
                     _serviceProviderHash = (_serviceProviderHash * 397) ^ (ProvideClientCertificatesCallback?.GetHashCode() ?? 0L);
                     _serviceProviderHash = (_serviceProviderHash * 397) ^ (RemoteCertificateValidationCallback?.GetHashCode() ?? 0L);
+                    _serviceProviderHash = (_serviceProviderHash * 397) ^ (ProvidePasswordCallback?.GetHashCode() ?? 0L);
                     _serviceProviderHash = (_serviceProviderHash * 397) ^ ReverseNullOrdering.GetHashCode();
                 }
 
