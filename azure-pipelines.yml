@@ -23,6 +23,21 @@ steps:
       packageType: 'sdk'
       version: '2.2.207'
 
+  - task: geeklearningio.gl-vsts-tasks-file-patch.xml-patch-task.XmlPatch@3
+    displayName: 'Set nuget credentials'
+    inputs:
+      XmlWorkingDir: '$(Build.SourcesDirectory)'
+      XmlTargetFilters: NuGet.config
+      JsonPatchContent: |
+        + /configuration/packageSourceCredentials => ""
+        + /configuration/packageSourceCredentials/tvlk-ecb => ""
+        + /configuration/packageSourceCredentials/tvlk-ecb/- => "add"
+        + /configuration/packageSourceCredentials/tvlk-ecb/add[last()]/@key => "UserName"
+        + /configuration/packageSourceCredentials/tvlk-ecb/add[last()]/@value => "VSTS"
+        + /configuration/packageSourceCredentials/tvlk-ecb/- => "add"
+        + /configuration/packageSourceCredentials/tvlk-ecb/add[last()]/@key => "ClearTextPassword"
+        + /configuration/packageSourceCredentials/tvlk-ecb/add[last()]/@value => "$(azure.artifacts.pat)"
+
   - script: dotnet pack src/EFCore.PG/EFCore.PG.csproj -c Release
     displayName: Pack EFCore.PG
   - script: dotnet pack src/EFCore.PG.NodaTime/EFCore.PG.NodaTime.csproj -c Release
